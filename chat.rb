@@ -28,7 +28,7 @@ class Bridge
           if data['e']
             data['e'].each do |e|
               next if e['user_id'] == chatbot_user_id # my chatbot's id
-              bot.Channel(irc_channel).send("#{e["user_name"]}: #{e["content"]}")
+              bot.Channel(irc_channel).send("#{e["user_name"]}: #{e["content"]}") unless e["content"].nil?
             end
           end
         end
