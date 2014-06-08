@@ -4,13 +4,13 @@ require_relative 'se-chatty'
 
 class Bridge
   def self.run se_site_id, chatbot_user_id, irc_server, irc_channel, irc_nick="SEBot"
-    sec = SEChatty.new 'stackexchange.com', ENV['SE_CHAT_EMAIL'], ENV['SE_CHAT_PASSWORD'], se_site_id
+    sec = SEChatty.new 'stackexchange.com', ENV['SE_EMAIL'], ENV['SE_PASSWORD'], se_site_id
 
     bot = Cinch::Bot.new do
       configure do |c|
         c.server = irc_server
         c.nick = irc_nick
-        c.channels = [irc_channel]
+        c.channels = ["#CS_CS169.1x", irc_channel]
       end
     end
 
@@ -27,6 +27,7 @@ class Bridge
           room_number = room.match(/\d+/)[0]
           if data['e']
             data['e'].each do |e|
+              p e
               next if e['user_id'] == chatbot_user_id # my chatbot's id
               bot.Channel(irc_channel).send("#{e["user_name"]}: #{e["content"]}") unless e["content"].nil?
             end
